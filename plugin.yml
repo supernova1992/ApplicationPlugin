@@ -1,0 +1,24 @@
+name: ApplicationPlugin
+main: me.supernova1992.ApplicationPlugin.ApplicationPlugin
+version: 1.1.0
+commands:
+    apply:
+        description: Apply to the server!
+        permission: ApplicationPlugin.apply
+        usage: /<command>
+    readapp:
+        description: Get the latest applications
+        permission: ApplicationPlugin.readapp
+        usage: /<command>
+permissions:
+    ApplicationPlugin.*:
+        description: All command permissions
+        children: 
+            ApplicationPlugin.apply: true
+            ApplicationPlugin.readapp: true
+    ApplicationPlugin.apply:
+        description: Apply command
+        default: true
+    ApplicationPlugin.readapp:
+        description: Read Application
+        default: false
