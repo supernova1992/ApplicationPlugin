@@ -1,0 +1,45 @@
+# LoginAdPermission checks for the listed permission. If the user has it, the ad will not run.
+ 
+LoginAdPermission: modifyworld.*
+LoginAd: Please apply by using /apply
+
+# FormApplyPerm checks for the listed permission. If the user has it, the form will not continue.
+# In the example, anyone without build perms can use the form.
+
+FormApplyPerm: modifyworld.*
+HasPermCommand: 
+- msg "+player+" You already have been whitelisted!
+
+# The minimum age used for the age requirement conditions below. If you don't want an age requirement, change UseAgeReq to false.
+UseAgeReq: true
+MinimumAge: 16
+
+# Here, enter commands that you'd like to run for each scenario. 
+# NOTE: Responses are only recorded if the age test fails. If you disable it above, every test will fail and every response will be recorded!
+# The following Variables may be used: 
+# variable = what it references
+# pid = player UIN 
+# player = player username (for use in commands ex /kick playername)
+
+MeetsAgeReq:
+- msg "+player+ " You've been granted build permission! Relog for changes to take effect!
+- pex user "+ pid + " group set Everyone
+DoesNotMeetAgeReq:
+- msg "+player+ " Your application has been sent to the moderators!
+
+# For each question you'd like to ask, add a new entry in the same format as these:
+# DO NOT CHANGE THE LAST ITEM HERE. IT MUST ALWAYS BE THE LAST ITEM.
+
+Form1:
+- Please explain why you'd like to join the server!
+- Please submit your age!
+- END_OF_CONVERSATION
+
+# Then specify here the data type that the question will be collecting: String or Integer (Number).
+# Please only use integer for the player's age. Using multiple integer types will cause an error. 
+# THIS MUST MATCH THE NUMBER OF QUESTIONS, EXCLUDING END_OF_CONVERSATION
+
+Form1types:
+- String
+- Integer
+- END_OF_CONVERSATION

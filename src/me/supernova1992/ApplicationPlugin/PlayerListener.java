@@ -26,8 +26,10 @@ public class PlayerListener implements Listener{
 		 Player player = e.getPlayer();
 		 
 		 final String UUIDStr = uuid.toString();
+		 
+		 String perms = plugin.getConfig().getString("LoginAdPermission");
 		
-		if(!(player.hasPermission("modifyworld.*"))){
+		if(!(player.hasPermission(perms))){
 			
 			
 			 Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin,new Runnable(){

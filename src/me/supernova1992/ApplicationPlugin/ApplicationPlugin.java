@@ -23,37 +23,7 @@ public class ApplicationPlugin extends JavaPlugin {
 
 	static String pname;
 	
-	public void loadActivity(){
-		String advertisement = "LoginAd";
-		String logadcon = "modifyworld.*";
-		String help1 = "#Commands to be run when user meets age requirement";
-		String commands1 = "MeetsAgeReq";
-		String commands2 = "DoesNotMeetAgeReq";
-		String condition = "LoginAdPermission";
-		String q1 = "Question1";
-		String q2 = "Question2";
-		String a = "MinimumAge";
-		List<String> list1 = Arrays.asList("msg \"+player+ \" You've been granted build permission! Relog for changes to take effect!","pex user \"+ pid + \" group set Everyone");
-		List<String> list2 = Arrays.asList("msg \"+player+ \" Your application has been sent to the moderators!");
-		String q1text = "Please explain why you'd like to join the server!";
-		String q2text = "Please submit your age!";
-		Integer age = 16;
-		String header = "LoginAdPermission checks for the listed permission. If the user has it, the ad will not run. The following Variables may be used: pid = player UIN player = playername (for use in commands ex /kick playername) ";
-		getConfig().options().header(header);
-		getConfig().addDefault(condition,logadcon);
-		getConfig().addDefault(advertisement, "Please apply by using /apply");
-		
-		getConfig().addDefault(a, age);
-		getConfig().addDefault(commands1, list1);
-		getConfig().addDefault(commands2, list2);
-		getConfig().addDefault(q1, q1text);
-		getConfig().addDefault(q2, q2text);
-		getConfig().options().copyDefaults(true);
-		
-		saveConfig();
-		
-	}
-	
+	static ApplicationPlugin plugin;
 	public static String getPlayer(){
 		
 		return pname;
@@ -61,11 +31,19 @@ public class ApplicationPlugin extends JavaPlugin {
 	
 	@Override
 	public void onEnable(){
+		plugin = this;
 		getLogger().info("Applications is listening for new users");
 		new PlayerListener(this);
-		loadActivity(); 
+		
+		this.getConfig().options().copyDefaults(true);
+		saveDefaultConfig();
+		//new WriteQuestions("test");
+		
 	}
-
+	public static ApplicationPlugin getAppPlug(){
+		
+		return plugin;
+	}
 	
 	@Override
 	public void onDisable(){
@@ -82,11 +60,21 @@ public class ApplicationPlugin extends JavaPlugin {
 			final String pid = uuid.toString();
 			
 			pname = player.getPlayerListName();
+			String perms = plugin.getConfig().getString("FormApplyPerm");
 			
-			if(!(sender.hasPermission("modifyworld.*"))){
+			if(!(sender.hasPermission(perms))){
+				String[] questions = null;
 			
+				Object[] f1 = plugin.getConfig().getList("Form1").toArray();
+				
+				questions = Arrays.copyOf(f1, f1.length, String[].class);
+				String[] types = null;
+				Object[] t1 =  plugin.getConfig().getList("Form1types").toArray();
+				types = Arrays.copyOf(t1, t1.length, String[].class);
+				int i = 0;
+				
 			ConversationFactory factory = new ConversationFactory(this);
-			Conversation conv = factory.withFirstPrompt(new FirstPrompt(this)).withLocalEcho(true).withEscapeSequence("quit").buildConversation((Player)sender);
+			Conversation conv = factory.withFirstPrompt(new FirstPrompt(this, i, questions, types)).withLocalEcho(true).withEscapeSequence("quit").buildConversation((Player)sender);
 			
 			 Boolean abandoned = false;
 			
