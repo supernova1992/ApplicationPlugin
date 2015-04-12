@@ -4,13 +4,17 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
 
 
 
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
 public class Application {
@@ -113,6 +117,8 @@ public class Application {
 		
 		String pid = uid.toString();
 		
+		String pname = p.getPlayerListName();
+		
 		Integer agereq =  plugin.getConfig().getInt("MinimumAge");
 		
 		Bukkit.getLogger().info(age.toString());
@@ -122,8 +128,52 @@ public class Application {
 		
 		if(age >= agereq){
 			
-			Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "msg "+player+ " You've been granted build permission! Relog for changes to take effect!");
-			Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "pex user "+ pid + " group set Everyone");
+			//Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "msg "+player+ " You've been granted build permission! Relog for changes to take effect!");
+			//Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "pex user "+ pid + " group set Everyone");
+			
+			//Object[] c1 = plugin.getConfig().getList("MeetsAgeReq").toArray();
+			
+			//String[] cmds = Arrays.copyOf(c1, c1.length,String[].class);
+			
+			ConfigurationSection entries = plugin.getConfig().getConfigurationSection("MeetsAgeReq.");
+			for(String key : entries.getKeys(false)){
+				
+				ArrayList<String> arlst = new ArrayList<String>();
+				
+				
+				for(Object obj : entries.getList(key)){
+					
+					String arr = obj.toString();
+					
+					//Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), arr);
+					arr = arr.replace("[Player]", Bukkit.getServer().getPlayer(player).getPlayerListName());
+					arr = arr.replace("[UIN]", pid);
+					
+					arlst.add(arr);
+				}
+				
+				Object[] a1 = arlst.toArray();
+				String[] args = Arrays.copyOf(a1, a1.length, String[].class);
+				int i =0;
+				String cmd = null;
+				while(i< args.length){
+					if(i == 0){
+						
+						cmd = args[0];
+					}else{
+					cmd = cmd +" "+ args[i];
+					}
+					i++;
+				}
+				
+				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), cmd);
+			}
+			
+			/*for(String cmd : cmds){
+				
+				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), cmd);
+				Bukkit.getLogger().info(cmd);
+			}*/
 			
 			
 		}else{

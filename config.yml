@@ -18,12 +18,19 @@ MinimumAge: 16
 # NOTE: Responses are only recorded if the age test fails. If you disable it above, every test will fail and every response will be recorded!
 # The following Variables may be used: 
 # variable = what it references
-# pid = player UIN 
-# player = player username (for use in commands ex /kick playername)
+# [UIN] = player UIN 
+# [Player] = player username (for use in commands ex /kick playername)
+
 
 MeetsAgeReq:
-- msg "+player+ " You've been granted build permission! Relog for changes to take effect!
-- pex user "+ pid + " group set Everyone
+    Command1:
+        - kick 
+        - [Player]
+        - You've been granted build permission! Relog for changes to take effect!
+    Command2:
+        - pex user 
+        - [UIN]
+        - group set Everyone
 DoesNotMeetAgeReq:
 - msg "+player+ " Your application has been sent to the moderators!
 
