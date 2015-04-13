@@ -24,8 +24,8 @@ import org.bukkit.entity.Player;
 
 public class FirstPrompt extends StringPrompt {
 
-	ApplicationPlugin plugin;
-	
+	ServerForms plugin;
+	static String formName = ServerForms.formName();
 	static String[] app;
 	static String input;
 	static String player;
@@ -39,7 +39,7 @@ public class FirstPrompt extends StringPrompt {
 		return input;
 	}
 	
-	public FirstPrompt(ApplicationPlugin instance, Integer i, String[] qs, String [] ts){
+	public FirstPrompt(ServerForms instance, Integer i, String[] qs, String [] ts){
 		
 		plugin = instance;
 		num = i;
@@ -69,7 +69,7 @@ public class FirstPrompt extends StringPrompt {
 			    out.println(input);
 			    out.close();
 			} catch (IOException e) {
-			    //exception handling left as an exercise for the reader
+				e.printStackTrace();
 			}
 		if (type[j].equalsIgnoreCase("integer")){
 			num++;

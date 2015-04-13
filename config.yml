@@ -1,3 +1,6 @@
+#ServerFormsConfig!
+#Created by Jim Taylor (/u/supernova1992, @supernova1992)
+
 # LoginAdPermission checks for the listed permission. If the user has it, the ad will not run.
  
 LoginAdPermission: modifyworld.*
@@ -5,14 +8,23 @@ LoginAd: Please apply by using /apply
 
 # FormApplyPerm checks for the listed permission. If the user has it, the form will not continue.
 # In the example, anyone without build perms can use the form.
-
-FormApplyPerm: modifyworld.*
+FormApplyPerm:
+    Application: modifyworld.*
+    Build: bukkit.command.op.give
+        
+        
 HasPermCommand: 
-- msg "+player+" You already have been whitelisted!
-
+    - msg
+    - [Player]
+    - You are not allowed to access that form.
 # The minimum age used for the age requirement conditions below. If you don't want an age requirement, change UseAgeReq to false.
-UseAgeReq: true
-MinimumAge: 16
+# if UseAgeReq is set to false, set Minimum age to any WHOLE NUMBER greater than 0.
+UseAgeReq:
+    Application: true
+    Build: false
+MinimumAge:
+    Application: 16
+    Build: 1
 
 # Here, enter commands that you'd like to run for each scenario. 
 # NOTE: Responses are only recorded if the age test fails. If you disable it above, every test will fail and every response will be recorded!
@@ -23,30 +35,54 @@ MinimumAge: 16
 
 
 MeetsAgeReq:
-    Command1:
-        - kick 
-        - [Player]
-        - You've been granted build permission! Relog for changes to take effect!
-    Command2:
-        - pex user 
-        - [UIN]
-        - group set Everyone
+    Application:
+        - Command1:
+            - msg 
+            - [Player]
+            - You've been granted build permission! Relog for changes to take effect!
+        - Command2:
+            - pex user 
+            - [UIN]
+            - group set Everyone
+    Build:
+        - Command1:
+            - msg
+            - [Player]
+            - Your build has been accepted.
 DoesNotMeetAgeReq:
-- msg "+player+ " Your application has been sent to the moderators!
+    Application:
+        - Command1:
+            - msg
+            - [Player]
+            - Your application has been sent to the moderators!
+    Build:
+        - Command1:
+            - msg
+            - [Player]
+            - Your application has been sent to the moderators!
 
 # For each question you'd like to ask, add a new entry in the same format as these:
 # DO NOT CHANGE THE LAST ITEM HERE. IT MUST ALWAYS BE THE LAST ITEM.
-
-Form1:
-- Please explain why you'd like to join the server!
-- Please submit your age!
-- END_OF_CONVERSATION
+Forms:
+    Application:
+        - Please submit your age!
+        - Please explain why you want to join the server!
+        - END_OF_CONVERSATION
+    Build:
+        - Describe your build request!
+        - How many people will be on your build team?
+        - END_OF_CONVERSATION
 
 # Then specify here the data type that the question will be collecting: String or Integer (Number).
-# Please only use integer for the player's age. Using multiple integer types will cause an error. 
+# Please only use integer for the player's age. Using multiple integers will cause an error. 
+# You can still obtain numeric information using string instead.
 # THIS MUST MATCH THE NUMBER OF QUESTIONS, EXCLUDING END_OF_CONVERSATION
-
-Form1types:
-- String
-- Integer
-- END_OF_CONVERSATION
+FormTypes:
+    Application:
+        - Integer
+        - String
+        - END_OF_CONVERSATION
+    Build:
+        - String
+        - String
+        - END_OF_CONVERSATION

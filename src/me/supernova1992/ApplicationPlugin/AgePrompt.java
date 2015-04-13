@@ -21,8 +21,8 @@ import org.bukkit.conversations.Prompt;
 public class AgePrompt extends NumericPrompt{
 
 	
-ApplicationPlugin plugin;
-
+ServerForms plugin;
+static String formName = ServerForms.formName();
 static Integer num;
 static String[] app;
 static String[] question;
@@ -36,7 +36,7 @@ static Integer j;
  }
  
 	
-	public AgePrompt(ApplicationPlugin instance, Integer i, String[] qs, String [] ts){
+	public AgePrompt(ServerForms instance, Integer i, String[] qs, String [] ts){
 		
 		plugin = instance;
 		numb = i;

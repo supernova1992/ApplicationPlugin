@@ -10,8 +10,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 public class PlayerListener implements Listener{
 
-	private ApplicationPlugin plugin;
-	public PlayerListener(ApplicationPlugin plugin){
+	private ServerForms plugin;
+	public PlayerListener(ServerForms plugin){
 			
 			plugin.getServer().getPluginManager().registerEvents(this, plugin);
 			

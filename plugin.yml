@@ -1,24 +1,24 @@
-name: ApplicationPlugin
-main: me.supernova1992.ApplicationPlugin.ApplicationPlugin
+name: ServerForms
+main: me.supernova1992.ApplicationPlugin.ServerForms
 version: 1.1.0
 commands:
     apply:
         description: Apply to the server!
-        permission: ApplicationPlugin.apply
-        usage: /<command>
+        permission: ServerForms.apply
+        usage: /<command> formName
     readapp:
         description: Get the latest applications
-        permission: ApplicationPlugin.readapp
+        permission: ServerForms.readapp
         usage: /<command>
 permissions:
-    ApplicationPlugin.*:
+    ServerForms.*:
         description: All command permissions
         children: 
-            ApplicationPlugin.apply: true
-            ApplicationPlugin.readapp: true
-    ApplicationPlugin.apply:
+            ServerForms.apply: true
+            ServerForms.readapp: true
+    ServerForms.apply:
         description: Apply command
         default: true
-    ApplicationPlugin.readapp:
+    ServerForms.readapp:
         description: Read Application
         default: false
