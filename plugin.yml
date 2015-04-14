@@ -1,5 +1,5 @@
 name: ServerForms
-main: me.supernova1992.ApplicationPlugin.ServerForms
+main: me.supernova1992.serverforms.ServerForms
 version: 1.1.0
 commands:
     apply:
