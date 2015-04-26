@@ -1,4 +1,4 @@
-package me.supernova1992.ApplicationPlugin;
+package me.supernova1992.applicationplugin;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -42,7 +42,7 @@ public class ServerForms extends JavaPlugin {
 		
 		this.getConfig().options().copyDefaults(true);
 		saveDefaultConfig();
-		//new WriteQuestions("test");
+		
 		
 	}
 	public static ServerForms getAppPlug(){
@@ -80,7 +80,7 @@ public class ServerForms extends JavaPlugin {
 					}
 					
 				
-				Bukkit.getLogger().info(formName);
+				//Bukkit.getLogger().info(formName);
 			
 			
 				pname = player.getPlayerListName();
@@ -156,21 +156,69 @@ public class ServerForms extends JavaPlugin {
 			
 		}
 		if(cmd.getName().equalsIgnoreCase("readapp")){
-			FileArrayProvider fap = new FileArrayProvider();
-			try{
-			String[] line = fap.readLines("plugins/ServerForms/"+formName+".txt");
-			Integer l = line.length - 1;
-			String ar = line[l];
-			String app = ar;
-			Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "msg "+sender+" "+app );
-			Bukkit.getLogger().info(app);
-			}catch(IOException ex){
+			
+			String fName=null;
+			
+			if (args.length > 0){
+				ConfigurationSection ent = plugin.getConfig().getConfigurationSection("Forms.");
 				
-				System.out.print(ex);
+				for(String key : ent.getKeys(false)){
+					//Bukkit.getLogger().info(key);
+					if(args[0].equalsIgnoreCase(key)){
+						
+						fName = key;
+						FileArrayProvider fap = new FileArrayProvider();
+						try{
+						String[] line = fap.readLines("plugins/ServerForms/"+fName+".txt");
+						//Integer l = line.length - 1;
+						//String ar = line[l];
+						//String app = ar;
+						int i = 0;
+						while (i < line.length){
+							Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "msg "+sender+" "+line[i] );
+							Bukkit.getLogger().info(line[i]);
+							i++;
+							
+						}
+						
+						//Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "msg "+sender+" "+app );
+						//Bukkit.getLogger().info(app);
+						}catch(IOException ex){
+							
+							System.out.print(ex);
+						}
+						
+						
+						return true;
+					}
+					
+					
+					
+					}
+				
+				
+			}else{
+				return false;
 			}
 			
 			
+		}
+		if(cmd.getName().equalsIgnoreCase("formlist")){
+			
+			
+				
+				ConfigurationSection ent = plugin.getConfig().getConfigurationSection("Forms.");
+				
+				for(String key : ent.getKeys(false)){
+					Bukkit.getLogger().info(key);
+					
+					Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "msg "+sender+" "+key );
+					
+					
+					}
+			
 			return true;
+			
 		}
 			
 		return false;
