@@ -1,4 +1,4 @@
-package me.supernova1992.applicationplugin;
+package me.supernova1992.ApplicationPlugin;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -9,32 +9,26 @@ import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
 
-import net.md_5.bungee.api.ChatColor;
-
-import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.conversations.Conversable;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
 import org.bukkit.conversations.StringPrompt;
-import org.bukkit.entity.Player;
-
-
 
 public class FirstPrompt extends StringPrompt {
 
-	ServerForms plugin;
-	static String formName = ServerForms.formName();
-	static String[] app;
-	static String input;
-	static String player;
-	static String[] question;
-	static String[] type;
-	static Integer num;
-	static Integer j;
+	private ServerForms plugin;
+	//private String formName = ServerForms.formName();
+	private String[] app;
+	private String input;
+	//private String player;
+	private String[] question;
+	private String[] type;
+	private Integer num;
+	private Integer j;
 	
-	public static String getInput(){
+	public String getInput(){
 		
 		return input;
 	}
@@ -59,11 +53,8 @@ public class FirstPrompt extends StringPrompt {
 	public Prompt acceptInput(ConversationContext c, String s){
 		Conversable cpo = c.getForWhom();
 		cpo.sendRawMessage("Thank you.");
-		 
-		player = cpo.toString();
+		//player = cpo.toString();
 		 input = s;
-		 
-		 
 		 try {
 			    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("inputs.txt", true)));
 			    out.println(input);
@@ -81,9 +72,9 @@ public class FirstPrompt extends StringPrompt {
 			
 		} 
 		if(type[j].equals("END_OF_CONVERSATION")){
-			app = Application.applicationValues();
-			
-			Application.AnalyzeApp(app);
+			Application myApp = new Application();
+			app = myApp.getApplicationValues();
+			myApp.AnalyzeApp(app);
 			
 			String p = "inputs.txt";
 			Path path = Paths.get(p);
@@ -94,9 +85,8 @@ public class FirstPrompt extends StringPrompt {
 			    System.err.format("%s: no such" + " file or directory%n", path);
 			} catch (DirectoryNotEmptyException x) {
 			    System.err.format("%s not empty%n", path);
-			} catch (IOException x) {
-			    // File permission problems are caught here.
-			    System.err.println(x);
+			} catch (IOException ex) {
+			    ex.printStackTrace();
 			}
 			return END_OF_CONVERSATION;
 		}

@@ -1,12 +1,8 @@
-package me.supernova1992.applicationplugin;
+package me.supernova1992.ApplicationPlugin;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -14,49 +10,35 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.conversations.Conversation;
-import org.bukkit.conversations.ConversationAbandonedEvent;
-import org.bukkit.conversations.ConversationAbandonedListener;
 import org.bukkit.conversations.ConversationFactory;
-import org.bukkit.conversations.Prompt;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class ServerForms extends JavaPlugin {
 
-	static String pname;
+	private String pname;
 	
-	static ServerForms plugin;
-	public static String getPlayer(){
+	public static ServerForms plugin;
+	
+	public String getPlayer(){
 		
-		return pname;
+		return this.pname;
 	}
 	
 	static String formName;
 	
-	
-	@Override
-	public void onEnable(){
+	public void onEnable() {
 		plugin = this;
-		getLogger().info("ServerForoms is listening for new applicants!");
-		new PlayerListener(this);
-		
+		Bukkit.getPluginManager().registerEvents(new PlayerListener(this),this);
 		this.getConfig().options().copyDefaults(true);
 		saveDefaultConfig();
-		
-		
 	}
-	public static ServerForms getAppPlug(){
+	public static ServerForms getAppPlug() {
 		
 		return plugin;
 	}
 	
-	@Override
-	public void onDisable(){
-		
-	}
-	
-	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args){
-		
+	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		
 		if(cmd.getName().equalsIgnoreCase("apply")){
 			
@@ -64,20 +46,14 @@ public class ServerForms extends JavaPlugin {
 			final UUID uuid  = ((Player) sender).getPlayer().getUniqueId();
 			final String pid = uuid.toString();
 			
-			if(args.length > 0){
-				
+			if(args.length > 0) {
 				ConfigurationSection ent = plugin.getConfig().getConfigurationSection("Forms.");
-				
-				for(String key : ent.getKeys(false)){
+				for(String key : ent.getKeys(false)) {
 					Bukkit.getLogger().info(key);
-					if(args[0].equalsIgnoreCase(key)){
-						
+					if(args[0].equalsIgnoreCase(key)) {
 						formName = key;
 					}
-					
-					
-					
-					}
+				}
 					
 				
 				//Bukkit.getLogger().info(formName);
@@ -114,16 +90,14 @@ public class ServerForms extends JavaPlugin {
 				return true;
 			}else{
 				ConfigurationSection entries = plugin.getConfig().getConfigurationSection("MeetsAgeReq."+formName+".");
-				for(String key : entries.getKeys(false)){
+				for(String key : entries.getKeys(false)) {
 					
 					ArrayList<String> arlst = new ArrayList<String>();
 					
-					
-					for(Object obj : entries.getList(key)){
+					for(Object obj : entries.getList(key)) {
 						
 						String arr = obj.toString();
 						
-						//Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), arr);
 						arr = arr.replace("[Player]", player.getPlayerListName());
 						arr = arr.replace("[UIN]", pid);
 						
@@ -146,7 +120,6 @@ public class ServerForms extends JavaPlugin {
 					
 					Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), cd);
 				}
-				//Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "msg "+player.getPlayerListName()+" You already have been whitelisted!");
 				return true;
 				
 			}
@@ -163,16 +136,14 @@ public class ServerForms extends JavaPlugin {
 				ConfigurationSection ent = plugin.getConfig().getConfigurationSection("Forms.");
 				
 				for(String key : ent.getKeys(false)){
-					//Bukkit.getLogger().info(key);
+					
 					if(args[0].equalsIgnoreCase(key)){
 						
 						fName = key;
 						FileArrayProvider fap = new FileArrayProvider();
-						try{
+						
+						try {
 						String[] line = fap.readLines("plugins/ServerForms/"+fName+".txt");
-						//Integer l = line.length - 1;
-						//String ar = line[l];
-						//String app = ar;
 						int i = 0;
 						while (i < line.length){
 							Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "msg "+sender+" "+line[i] );
@@ -181,20 +152,13 @@ public class ServerForms extends JavaPlugin {
 							
 						}
 						
-						//Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "msg "+sender+" "+app );
-						//Bukkit.getLogger().info(app);
 						}catch(IOException ex){
 							
 							System.out.print(ex);
 						}
-						
-						
 						return true;
 					}
-					
-					
-					
-					}
+				}
 				
 				
 			}else{
@@ -205,8 +169,6 @@ public class ServerForms extends JavaPlugin {
 		}
 		if(cmd.getName().equalsIgnoreCase("formlist")){
 			
-			
-				
 				ConfigurationSection ent = plugin.getConfig().getConfigurationSection("Forms.");
 				
 				for(String key : ent.getKeys(false)){

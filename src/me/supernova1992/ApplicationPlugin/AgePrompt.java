@@ -1,4 +1,4 @@
-package me.supernova1992.applicationplugin;
+package me.supernova1992.ApplicationPlugin;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -10,9 +10,7 @@ import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import net.md_5.bungee.api.ChatColor;
-
-import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.conversations.Conversable;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.NumericPrompt;
@@ -21,21 +19,20 @@ import org.bukkit.conversations.Prompt;
 public class AgePrompt extends NumericPrompt{
 
 	
-ServerForms plugin;
-static String formName = ServerForms.formName();
-static Integer num;
-static String[] app;
-static String[] question;
-static String[] type;
-static Integer numb;
-static Integer j;
+private ServerForms plugin;
+//private String formName = ServerForms.formName(); not in use
+private Integer num;
+private String[] app;
+private String[] question;
+private String[] type;
+private Integer numb;
+private Integer j;
 
- public static Integer getInput(){
+ public Integer getInput(){
 	 
-	 return num;
+	 return this.num;
  }
  
-	
 	public AgePrompt(ServerForms instance, Integer i, String[] qs, String [] ts){
 		
 		plugin = instance;
@@ -65,11 +62,11 @@ static Integer j;
 			    out.println(input);
 			    out.close();
 			} catch (IOException e) {
-			    //exception handling left as an exercise for the reader
+				
+			    e.printStackTrace();
 			}
 		
-		
-		 if (type[j].equalsIgnoreCase("integer")){
+		 if (type[j].equalsIgnoreCase("integer")) {
 				numb++;
 			return new AgePrompt(plugin, numb, question, type);
 			}
@@ -79,9 +76,10 @@ static Integer j;
 				
 			} 
 			if(type[j].equals("END_OF_CONVERSATION")){
-				app = Application.applicationValues();
+				Application myApp = new Application();
+				app = myApp.getApplicationValues();
 				
-				Application.AnalyzeApp(app);
+				myApp.AnalyzeApp(app);
 				
 				String p = "inputs.txt";
 				Path path = Paths.get(p);
@@ -92,9 +90,8 @@ static Integer j;
 				    System.err.format("%s: no such" + " file or directory%n", path);
 				} catch (DirectoryNotEmptyException x) {
 				    System.err.format("%s not empty%n", path);
-				} catch (IOException x) {
-				    // File permission problems are caught here.
-				    System.err.println(x);
+				} catch (IOException ex) {
+				    ex.printStackTrace();
 				}
 				return END_OF_CONVERSATION;
 			}
