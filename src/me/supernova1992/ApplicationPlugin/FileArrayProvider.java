@@ -1,4 +1,4 @@
-package me.supernova1992.applicationplugin;
+package me.supernova1992.ApplicationPlugin;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
